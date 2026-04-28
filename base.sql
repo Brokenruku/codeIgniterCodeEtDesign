@@ -11,5 +11,15 @@ CREATE TABLE plats (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     image_url VARCHAR(255),
-    price DECIMAL(10, 2) NOT NULL
+    note INT,
+    emoji VARCHAR(10),
+    temps INT,
+    categorie_id INT,
+    calorie INT,
+    FOREIGN KEY (categorie_id) REFERENCES CATEGORIE(id)
+);
+
+CREATE TABLE CATEGORIE(
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL UNIQUE
 );
