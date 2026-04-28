@@ -8,5 +8,6 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/home', 'Home::index');
 $routes->get('/login', 'loginController::index');
 $routes->get('/inscription', 'inscriptionController::index');
-$routes->get('/ajouter', 'ajouterController::index');
+$routes->get('/ajouter', 'AjouterController::index');
 $routes->get('/stat', 'StatController::index');
+$routes->post('/ajouter/save', 'AjouterController::save');

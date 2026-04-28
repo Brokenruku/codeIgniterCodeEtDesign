@@ -45,7 +45,7 @@
     </div>
 
     <!-- Form -->
-    <form class="addfood-form" onsubmit="submitFood(event)">
+    <form class="addfood-form" id="addFoodForm" enctype="multipart/form-data">
 
       <!-- Image Upload -->
       <div class="form-group">
@@ -53,7 +53,7 @@
         <div class="upload-zone" id="upload-zone"
              onclick="document.getElementById('field-img').click()"
              ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-          <input type="file" id="field-img" accept="image/*" style="display:none" onchange="onImageUpload(event)" />
+          <input type="file" id="field-img" name="image" accept="image/*" style="display:none" onchange="onImageUpload(event)" />
           <div class="upload-placeholder" id="upload-placeholder">
             <span class="upload-icon">📷</span>
             <p class="upload-text">Cliquer ou glisser une photo</p>
@@ -72,13 +72,13 @@
         <div class="emoji-grid" id="emoji-grid">
           <!-- injected by JS -->
         </div>
-        <input type="hidden" id="field-emoji" value="🍽️" />
+        <input type="hidden" id="field-emoji" name="emoji" value="🍽️" />
       </div>
 
       <!-- Name -->
       <div class="form-group">
         <label>Nom du plat <span class="required">*</span></label>
-        <input type="text" id="field-name" placeholder="ex : Bœuf bourguignon" maxlength="40"
+        <input type="text" id="field-name" name="name" placeholder="ex : Bœuf bourguignon" maxlength="40"
                oninput="syncPreview()" required />
       </div>
 
@@ -86,23 +86,15 @@
       <div class="form-group">
         <label>Catégorie <span class="required">*</span></label>
         <div class="select-wrap">
-          <select id="field-cat" onchange="onCatChange()" required>
+          <select id="field-cat" name="categorie" onchange="onCatChange()" required>
             <option value="">-- Choisir --</option>
-            <option>Français</option>
-            <option>Italien</option>
-            <option>Japonais</option>
-            <option>Mexicain</option>
-            <option>Indien</option>
-            <option>Thaïlandais</option>
-            <option>Américain</option>
-            <option>Oriental</option>
-            <option>Maghrébin</option>
-            <option>Hawaïen</option>
-            <option>Dessert</option>
+            <?php foreach ($categories as $categorie): ?>
+              <option value="<?= esc($categorie['nom']) ?>"><?= esc($categorie['nom']) ?></option>
+            <?php endforeach; ?>
             <option value="__custom__">Autre (préciser)</option>
           </select>
         </div>
-        <input type="text" id="field-cat-custom" placeholder="Votre catégorie…"
+        <input type="text" id="field-cat-custom" name="categorie_custom" placeholder="Votre catégorie…"
                style="display:none;margin-top:8px" oninput="syncPreview()" />
       </div>
 
@@ -111,7 +103,7 @@
         <div class="form-group" style="flex:1">
           <label>Temps <span class="required">*</span></label>
           <div class="input-suffix-wrap">
-            <input type="number" id="field-time" placeholder="30" min="1" max="999"
+            <input type="number" id="field-time" name="temps" placeholder="30" min="1" max="999"
                    oninput="syncPreview()" required />
             <span class="input-suffix">min</span>
           </div>
@@ -119,7 +111,7 @@
         <div class="form-group" style="flex:1">
           <label>Calories <span class="required">*</span></label>
           <div class="input-suffix-wrap">
-            <input type="number" id="field-cal" placeholder="500" min="1" max="9999"
+            <input type="number" id="field-cal" name="calorie" placeholder="500" min="1" max="9999"
                    oninput="syncPreview()" required />
             <span class="input-suffix">kcal</span>
           </div>
@@ -130,7 +122,7 @@
       <div class="form-group">
         <label>Note  <span class="required">*</span></label>
         <div class="star-row">
-          <input type="range" id="field-rating" min="1" max="5" step="0.1" value="4.0"
+          <input type="range" id="field-rating" name="note" min="1" max="5" step="0.1" value="4.0"
                  oninput="syncPreview()" />
           <div class="star-display">
             <span id="star-visual">★★★★☆</span>
@@ -142,9 +134,9 @@
       <!-- Description -->
       <div class="form-group">
         <label>Description</label>
-        <textarea id="field-desc" placeholder="Décrivez votre plat en quelques mots…"
-                  rows="3" maxlength="140" oninput="syncPreview()"></textarea>
-        <div class="char-count"><span id="char-count">0</span>/140</div>
+        <textarea id="field-desc" name="description" placeholder="Décrivez votre plat en quelques mots…"
+                  rows="3" maxlength="500" oninput="syncPreview()"></textarea>
+        <div class="char-count"><span id="char-count">0</span>/500</div>
       </div>
 
       <p class="form-error" id="form-error"></p>
@@ -174,7 +166,7 @@
 <div class="toast" id="toast">✅ Plat ajouté avec succès !</div>
 
 <script>
-    /* 
+  /* 
   if (localStorage.getItem('fs_logged') !== 'true') {
     window.location.href = 'login.html';
   }
@@ -182,7 +174,8 @@
     localStorage.setItem('fs_logged', 'false');
     window.location.href = 'login.html';
   }
-*/
+  */
+
   /* ── Emoji grid ── */
   const EMOJIS = [
     '🍕','🍔','🌮','🌯','🍜','🍝','🍣','🍱','🍛','🍲',
@@ -196,14 +189,17 @@
     '#FF6B6B','#FF8E53','#FFC371','#4ECDC4','#45B7D1',
     '#96CEB4','#DDA0DD','#FF69B4','#20B2AA','#9370DB','#F08080','#3CB371',
   ];
-  const CAT_LIST = ['Français','Italien','Japonais','Mexicain','Indien','Thaïlandais','Américain','Oriental','Maghrébin','Hawaïen','Dessert'];
+  
+  const CAT_LIST = <?= json_encode(array_column($categories, 'nom')) ?>;
+  CAT_LIST.push('Autre');
+  
   const catColor = cat => {
     const i = CAT_LIST.indexOf(cat);
     return CAT_COLORS[i >= 0 ? i : CAT_COLORS.length - 1];
   };
 
   let selectedEmoji = '🍽️';
-  let uploadedImageDataURL = null;
+  let uploadedImageFile = null;
 
   /* ── Image upload ── */
   function onImageUpload(e) {
@@ -236,10 +232,11 @@
     }
     err.classList.remove('visible');
 
+    uploadedImageFile = file;
+    
     const reader = new FileReader();
     reader.onload = function(ev) {
-      uploadedImageDataURL = ev.target.result;
-      document.getElementById('upload-preview-img').src = uploadedImageDataURL;
+      document.getElementById('upload-preview-img').src = ev.target.result;
       document.getElementById('upload-placeholder').style.display = 'none';
       document.getElementById('upload-preview').style.display    = 'block';
       syncPreview();
@@ -249,7 +246,7 @@
 
   function removeImage(e) {
     e.stopPropagation();
-    uploadedImageDataURL = null;
+    uploadedImageFile = null;
     document.getElementById('field-img').value = '';
     document.getElementById('upload-preview-img').src = '';
     document.getElementById('upload-preview').style.display    = 'none';
@@ -280,14 +277,20 @@
     const sel    = document.getElementById('field-cat');
     const custom = document.getElementById('field-cat-custom');
     custom.style.display = sel.value === '__custom__' ? 'block' : 'none';
+    if (sel.value === '__custom__') {
+      custom.required = true;
+    } else {
+      custom.required = false;
+    }
     syncPreview();
   }
 
   function getCategory() {
     const sel = document.getElementById('field-cat');
-    return sel.value === '__custom__'
-      ? document.getElementById('field-cat-custom').value.trim()
-      : sel.value;
+    if (sel.value === '__custom__') {
+      return document.getElementById('field-cat-custom').value.trim();
+    }
+    return sel.value;
   }
 
   /* ── Live preview sync ── */
@@ -304,8 +307,12 @@
     // Photo vs emoji dans l'aperçu
     const previewPhoto = document.getElementById('preview-photo');
     const previewEmoji = document.getElementById('preview-emoji');
-    if (uploadedImageDataURL) {
-      previewPhoto.src             = uploadedImageDataURL;
+    if (uploadedImageFile) {
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        previewPhoto.src = ev.target.result;
+      };
+      reader.readAsDataURL(uploadedImageFile);
       previewPhoto.style.display   = 'block';
       previewEmoji.style.display   = 'none';
       document.getElementById('preview-img').style.background = 'none';
@@ -334,44 +341,72 @@
     document.getElementById('char-count').textContent = len;
   }
 
-  /* ── Submit ── */
-  function submitFood(e) {
+  /* ── Submit vers la base de données ── */
+  async function submitFood(e) {
     e.preventDefault();
+    
     const err = document.getElementById('form-error');
-
-    const name   = document.getElementById('field-name').value.trim();
-    const cat    = getCategory();
-    const time   = document.getElementById('field-time').value;
-    const cal    = document.getElementById('field-cal').value;
+    const name = document.getElementById('field-name').value.trim();
+    const cat = getCategory();
+    const time = document.getElementById('field-time').value;
+    const cal = document.getElementById('field-cal').value;
     const rating = parseFloat(document.getElementById('field-rating').value).toFixed(1);
-    const desc   = document.getElementById('field-desc').value.trim();
+    const desc = document.getElementById('field-desc').value.trim();
+    const emoji = selectedEmoji;
 
     if (!name || !cat || !time || !cal) {
       err.textContent = 'Veuillez remplir tous les champs obligatoires.';
       err.classList.add('visible');
       return;
     }
+    
+    if (cat === '__custom__' || cat === '') {
+      err.textContent = 'Veuillez sélectionner ou saisir une catégorie valide.';
+      err.classList.add('visible');
+      return;
+    }
+    
     err.classList.remove('visible');
 
-    const customs = JSON.parse(localStorage.getItem('fs_custom_foods') || '[]');
-    const newId   = 1000 + customs.length + Date.now() % 10000;
+    // Créer FormData pour l'envoi
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('categorie', cat);
+    formData.append('temps', time);
+    formData.append('calorie', cal);
+    formData.append('note', rating);
+    formData.append('description', desc);
+    formData.append('emoji', emoji);
+    
+    if (uploadedImageFile) {
+      formData.append('image', uploadedImageFile);
+    }
 
-    customs.push({
-      id: newId,
-      name,
-      emoji: selectedEmoji,
-      img:   uploadedImageDataURL || null,
-      cat,
-      time: `${time} min`,
-      cal:  `${cal} kcal`,
-      rating,
-      desc: desc || `Un délicieux plat de type ${cat}.`,
-    });
-
-    localStorage.setItem('fs_custom_foods', JSON.stringify(customs));
-
-    showToast();
-    setTimeout(() => { window.location.href = '/home'; }, 1400);
+    try {
+      const response = await fetch('/ajouter/save', {
+        method: 'POST',
+        body: formData
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        showToast();
+        setTimeout(() => { window.location.href = '/home'; }, 1400);
+      } else {
+        let errorMsg = '';
+        if (result.errors) {
+          errorMsg = Object.values(result.errors).join(', ');
+        } else {
+          errorMsg = 'Erreur lors de l\'ajout du plat';
+        }
+        err.textContent = errorMsg;
+        err.classList.add('visible');
+      }
+    } catch (error) {
+      err.textContent = 'Erreur de connexion au serveur';
+      err.classList.add('visible');
+    }
   }
 
   function showToast() {
@@ -379,6 +414,9 @@
     t.classList.add('visible');
     setTimeout(() => t.classList.remove('visible'), 2500);
   }
+
+  /* ── Attach submit event ── */
+  document.getElementById('addFoodForm').addEventListener('submit', submitFood);
 
   /* ── Init preview ── */
   syncPreview();

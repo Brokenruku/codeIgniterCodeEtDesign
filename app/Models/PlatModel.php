@@ -25,4 +25,9 @@ class PlatModel extends Model
                     ->orderBy('RAND()')
                     ->findAll($limit);
     }
+    
+    public function insertPlat($data)
+    {
+        return $this->insert($data);
+    }
 }
