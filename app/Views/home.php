@@ -67,26 +67,14 @@
   }
   */
 
-  /* ── Data ── */
-  const ALL_FOODS = [
-    { id:1,  name:"Ramen Tonkotsu",     emoji:"🍜", img:"images/ramen.jpg",    cat:"Japonais",    time:"45 min", cal:"620 kcal", rating:"4.8", desc:"Bouillon de porc riche, nouilles fraîches, œuf mollet et chashu." },
-    { id:2,  name:"Pizza Margherita",   emoji:"🍕", img:"images/pizza.jpg",    cat:"Italien",     time:"30 min", cal:"540 kcal", rating:"4.7", desc:"Tomate San Marzano, mozzarella di bufala, basilic frais." },
-    { id:3,  name:"Tacos al Pastor",    emoji:"🌮", img:"images/tacos.jpg",    cat:"Mexicain",    time:"20 min", cal:"480 kcal", rating:"4.6", desc:"Porc mariné aux épices, ananas, coriandre et salsa verde." },
-    { id:4,  name:"Pad Thaï",           emoji:"🍝", img:"images/padthai.jpg",  cat:"Thaïlandais", time:"25 min", cal:"550 kcal", rating:"4.5", desc:"Nouilles de riz sautées, crevettes, cacahuètes et citron vert." },
-    { id:5,  name:"Burger Smash",       emoji:"🍔", img:"images/burger.jpg",   cat:"Américain",   time:"15 min", cal:"750 kcal", rating:"4.9", desc:"Double galette beurrée, cheddar fondu, pickles maison." },
-    { id:6,  name:"Sushi Omakase",      emoji:"🍣", img:"images/sushi.jpg",    cat:"Japonais",    time:"60 min", cal:"420 kcal", rating:"5.0", desc:"Sélection du chef : thon, saumon, oursin et bar de ligne." },
-    { id:7,  name:"Shakshuka",          emoji:"🍳", img:"images/shakshuka.jpg",cat:"Oriental",    time:"20 min", cal:"390 kcal", rating:"4.4", desc:"Œufs pochés dans une sauce tomate épicée aux poivrons." },
-    { id:8,  name:"Crêpe Suzette",      emoji:"🥞", img:"images/crepes.jpg",   cat:"Français",    time:"15 min", cal:"310 kcal", rating:"4.6", desc:"Crêpes au beurre d'agrumes flambées au Grand Marnier." },
-    { id:9,  name:"Biryani d'agneau",   emoji:"🍚", img:"images/biryani.jpg",  cat:"Indien",      time:"90 min", cal:"680 kcal", rating:"4.8", desc:"Riz basmati parfumé, agneau tendre, safran et raïta." },
-    { id:10, name:"Poke Bowl Saumon",   emoji:"🥗", img:"images/pokebowl.jpg", cat:"Hawaïen",     time:"10 min", cal:"490 kcal", rating:"4.7", desc:"Riz sushi, saumon frais, avocat, edamame et sauce ponzu." },
-    { id:11, name:"Couscous Royal",     emoji:"🍲", img:"images/couscous.jpg", cat:"Maghrébin",   time:"75 min", cal:"720 kcal", rating:"4.9", desc:"Semoule fine, merguez, poulet, légumes et bouillon parfumé." },
-    { id:12, name:"Tiramisu",           emoji:"🍮", img:"images/tiramisu.jpg", cat:"Dessert",     time:"20 min", cal:"380 kcal", rating:"4.8", desc:"Mascarpone aérien, biscuits imbibés d'espresso et cacao." },
-  ];
+  /* ── Data from PHP (Base de données) ── */
+  const ALL_FOODS = <?= json_encode($foods ?? []) ?>;
 
   const CAT_COLORS = [
     '#FF6B6B','#FF8E53','#FFC371','#4ECDC4','#45B7D1',
     '#96CEB4','#DDA0DD','#FF69B4','#20B2AA','#9370DB','#F08080','#3CB371',
   ];
+  
   const customs  = JSON.parse(localStorage.getItem('fs_custom_foods') || '[]');
   const FOODS    = [...ALL_FOODS, ...customs];
   const ALL_CATS = [...new Set(FOODS.map(f => f.cat))];
@@ -147,7 +135,7 @@
     el.className  = 'food-card';
     el.dataset.id = food.id;
     const imgHTML = food.img
-      ? `<img src="${food.img}" alt="${food.name}" class="food-card-photo" onerror="this.parentElement.innerHTML='<span class=food-card-emoji>${food.emoji}</span>'">`
+      ? `<img src="<?= base_url() ?>/${food.img}" alt="${food.name}" class="food-card-photo" onerror="this.parentElement.innerHTML='<span class=food-card-emoji>${food.emoji}</span>'">`
       : `<span class="food-card-emoji">${food.emoji}</span>`;
     el.innerHTML = `
       <div class="food-card-img" style="background:linear-gradient(135deg,${col}22,${col}55)">${imgHTML}</div>
@@ -155,17 +143,28 @@
       <div class="stamp stamp-nope">Nope 👎</div>
       <div class="food-card-info">
         <div class="food-card-top">
-          <div class="food-card-name">${food.name}</div>
+          <div class="food-card-name">${escapeHtml(food.name)}</div>
           <div class="food-card-rating">⭐ ${food.rating}</div>
         </div>
         <div class="food-card-meta">
-          <span class="badge category">${food.cat}</span>
+          <span class="badge category">${escapeHtml(food.cat)}</span>
           <span class="badge time">⏱ ${food.time}</span>
           <span class="badge cal">🔥 ${food.cal}</span>
         </div>
-        <div class="food-card-desc">${food.desc}</div>
+        <div class="food-card-desc">${escapeHtml(food.desc || '')}</div>
       </div>`;
     return el;
+  }
+
+  // Fonction utilitaire pour échapper le HTML et éviter les XSS
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   /* ── Drag ── */
