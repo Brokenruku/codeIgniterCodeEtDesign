@@ -1,38 +1,43 @@
 // ═══════════════════════════════════════════
 // VARIABLES
 // ═══════════════════════════════════════════
+// Colors (primary palette)
+$brand:       #5C7CFA;   // bleu moderne (primary)
+$brand-dark:  #3B5BDB;
+$brand-light: #E7F0FF;
+$brand-end:   #22C55E;   // vert doux pour gradient
+$accent:      #14B8A6;   // teal harmonieux
 
-// Colors
-$brand:       #FF6B6B;
-$brand-dark:  #E55555;
-$brand-light: #FFF0F0;
-$brand-end:   #FF8E53;   // gradient end
-$accent:      #4ECDC4;
-$ok:          #2ECC71;
-$ok-dark:     #27AE60;
-$warn:        #E74C3C;
-$blue:        #3498DB;
-$star:        #F6B100;
+$ok:          #22C55E;
+$ok-dark:     #16A34A;
 
-// Neutrals
-$bg:          #F8F9FA;
+$warn:        #F97316;   // orange doux (moins agressif que rouge pur)
+$danger:      #EF4444;   // vrai rouge propre (remplace ancien warn implicite)
+
+$blue:        #60A5FA;
+$star:        #FBBF24;   // doré plus doux et moderne
+
+// Neutrals (plus propres et équilibrés)
+$bg:          #F9FAFB;
 $white:       #FFFFFF;
-$input-bg:    #FAFAFA;
-$text:        #2D3748;
-$muted:       #718096;
-$border:      #E2E8F0;
-$toast-bg:    #2D3748;
+$input-bg:    #F3F4F6;
+$text:        #1F2937;
+$muted:       #6B7280;
+$border:      #E5E7EB;
+$toast-bg:    #111827;
 
-// Badge colors
-$badge-cat-bg:     #EBF8FF;
-$badge-cat-text:   #2B6CB0;
-$badge-cat-border: #BEE3F8;
-$badge-time-bg:    #F0FFF4;
-$badge-time-text:  #276749;
-$badge-time-border:#C6F6D5;
-$badge-cal-bg:     #FFFAF0;
-$badge-cal-text:   #C05621;
-$badge-cal-border: #FEEBC8;
+// Badge colors (cohérents + pastel UI)
+$badge-cat-bg:     #EFF6FF;
+$badge-cat-text:   #1D4ED8;
+$badge-cat-border: #BFDBFE;
+
+$badge-time-bg:    #ECFDF5;
+$badge-time-text:  #065F46;
+$badge-time-border:#A7F3D0;
+
+$badge-cal-bg:     #FFF7ED;
+$badge-cal-text:   #9A3412;
+$badge-cal-border: #FED7AA;
 
 // Radii
 $radius:      20px;
@@ -41,11 +46,11 @@ $radius-input: 14px;
 $radius-btn:  14px;
 $radius-pill: 50px;
 
-// Shadows
-$shadow:      0 8px 32px rgba(0, 0, 0, .12);
-$shadow-lg:   0 20px 60px rgba(0, 0, 0, .18);
-$shadow-sm:   0 2px 12px rgba(0, 0, 0, .06);
-$shadow-btn:  0 4px 16px rgba(0, 0, 0, .12);
+// Shadows (plus soft, moderne)
+$shadow:      0 10px 30px rgba(0, 0, 0, .10);
+$shadow-lg:   0 25px 60px rgba(0, 0, 0, .15);
+$shadow-sm:   0 2px 10px rgba(0, 0, 0, .06);
+$shadow-btn:  0 6px 18px rgba(0, 0, 0, .12);
 
 // Typography
 $font-stack: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -158,7 +163,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(145deg, $brand 0%, $brand-end 50%, #FFC371 100%);
+  background: linear-gradient(145deg, $brand 0%, $brand-end 50%, #ff71b3 100%);
   position: relative;
   overflow: hidden;
 
