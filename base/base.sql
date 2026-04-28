@@ -25,17 +25,17 @@ CREATE TABLE users (
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
-
+-- Version sans clés étrangères pour démarrer
 CREATE TABLE user_interactions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     plat_id INT NOT NULL,
     action ENUM('seen', 'like', 'super') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (plat_id) REFERENCES plats(id),
+    INDEX idx_user_id (user_id),
+    INDEX idx_plat_id (plat_id),
     UNIQUE KEY unique_interaction (user_id, plat_id, action)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE user_plats (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -49,6 +49,6 @@ CREATE TABLE user_plats (
     categorie_id INT,
     calorie INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (categorie_id) REFERENCES CATEGORIE(id)
-) ENGINE=InnoDB;
+    INDEX idx_user_id (user_id),
+    INDEX idx_categorie_id (categorie_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
