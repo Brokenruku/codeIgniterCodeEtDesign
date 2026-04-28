@@ -6,10 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/inscription">
+    <form action="/login">
         <input type="text" name="username" id="username" placeholder="Username">
         <input type="password" name="password" id="password" placeholder="Password">
-        <button type="submit">Login</button>
+        <button type="submit">Inscrire</button>
     </form>
 </body>
 </html>
