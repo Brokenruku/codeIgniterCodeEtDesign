@@ -87,11 +87,11 @@
             localStorage.removeItem('fs_seen');
             localStorage.removeItem('fs_deck');
 
-            window.location.href = 'home.html';
+            window.location.href = '/home';
         }
 
         if (localStorage.getItem('fs_logged') === 'true') {
-            window.location.href = 'home.html';
+            window.location.href = '/home';
         }
 
         document.addEventListener('keydown', e => {

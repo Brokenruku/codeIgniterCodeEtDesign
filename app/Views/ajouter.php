@@ -157,13 +157,13 @@
 
   <!-- Bottom Nav -->
   <div class="bottom-nav">
-    <a href="home.html">
+    <a href="/home">
       <span class="nav-icon">🔥</span>Découvrir
     </a>
-    <a href="add-food.html" class="active">
+    <a href="/ajouter" class="active">
       <span class="nav-icon">➕</span>Ajouter
     </a>
-    <a href="stats.html">
+    <a href="/stat">
       <span class="nav-icon">📊</span>Mes stats
     </a>
   </div>
@@ -371,7 +371,7 @@
     localStorage.setItem('fs_custom_foods', JSON.stringify(customs));
 
     showToast();
-    setTimeout(() => { window.location.href = 'home.html'; }, 1400);
+    setTimeout(() => { window.location.href = '/home'; }, 1400);
   }
 
   function showToast() {

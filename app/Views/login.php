@@ -57,7 +57,7 @@
             const user = JSON.parse(localStorage.getItem('fs_user') || 'null');
             if (user && user.email === email && user.pwd === pwd) {
                 localStorage.setItem('fs_logged', 'true');
-                window.location.href = 'home.html';
+                window.location.href = '/home';
             } else if (!user) {
                 localStorage.setItem('fs_user', JSON.stringify({
                     name: 'Invité',
@@ -65,7 +65,7 @@
                     pwd
                 }));
                 localStorage.setItem('fs_logged', 'true');
-                window.location.href = 'home.html';
+                window.location.href = '/home';
             } else {
                 err.textContent = 'Email ou mot de passe incorrect.';
                 err.classList.add('visible');
@@ -73,7 +73,7 @@
         }
 
         if (localStorage.getItem('fs_logged') === 'true') {
-            window.location.href = 'home.html';
+            window.location.href = '/home';
         }
 
         document.addEventListener('keydown', e => {

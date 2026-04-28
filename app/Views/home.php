@@ -14,7 +14,7 @@
   <div class="topbar">
     <span class="topbar-logo"><span>🍽️</span>FoodSwipe</span>
     <div class="topbar-actions">
-      <a href="stats.html" title="Mes stats">📊</a>
+      <a href="/stat" title="Mes stats">📊</a>
       <a href="#" title="Se déconnecter" onclick="logout()">🚪</a>
     </div>
   </div>
@@ -27,7 +27,7 @@
       <div class="emoji">🍀</div>
       <h2>C'est tout pour l'instant !</h2>
       <p>Vous avez vu tous les plats disponibles.<br>Consultez vos stats !</p>
-      <a href="stats.html" class="btn-primary" style="max-width:200px;margin-top:8px;text-align:center;display:block">
+      <a href="/stat" class="btn-primary" style="max-width:200px;margin-top:8px;text-align:center;display:block">
         Voir mes stats 📊
       </a>
     </div>
@@ -42,13 +42,13 @@
 
   <!-- Bottom Nav -->
   <div class="bottom-nav">
-    <a href="home.html" class="active">
+    <a href="/home" class="active">
       <span class="nav-icon">🔥</span>Découvrir
     </a>
     <a href="/ajouter">
       <span class="nav-icon">➕</span>Ajouter
     </a>
-    <a href="stats.html">
+    <a href="/stat">
       <span class="nav-icon">📊</span>Mes stats
     </a>
   </div>
