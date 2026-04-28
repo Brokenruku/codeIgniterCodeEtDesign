@@ -12,7 +12,7 @@ class UserModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['email', 'password', 'name'];
+    protected $allowedFields    = ['email', 'password', 'username'];
 
     protected bool $allowEmptyInserts = false;
 
@@ -36,7 +36,7 @@ class UserModel extends Model
         // Insert new user
         $data = [
             'email'    => $email,
-            'name'     => $name,
+            'username'     => $name,
             'password' => $hashedPassword
         ];
 

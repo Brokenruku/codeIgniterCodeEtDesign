@@ -20,18 +20,18 @@ class inscriptionController extends BaseController
 
     public function register()
     {
-        if ($this->request->getMethod() !== 'post') {
+        if (strtoupper($this->request->getMethod()) !== 'POST') {
             return $this->response->setStatusCode(405)->setJSON(['success' => false, 'message' => 'Method Not Allowed']);
         }
 
         // Get POST data
-        $name = $this->request->getPost('name');
+        $username = $this->request->getPost('name');
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
         $confirmPassword = $this->request->getPost('confirmPassword');
 
         // Validate inputs
-        if (!$name || !$email || !$password || !$confirmPassword) {
+        if (!$username || !$email || !$password || !$confirmPassword) {
             return $this->response->setJSON(['success' => false, 'message' => 'Veuillez remplir tous les champs.']);
         }
 
@@ -49,7 +49,7 @@ class inscriptionController extends BaseController
         }
 
         // Register user
-        $result = $this->userModel->registerUser($email, $name, $password);
+        $result = $this->userModel->registerUser($email, $username, $password);
 
         if ($result['success']) {
             return $this->response->setJSON([

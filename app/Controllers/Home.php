@@ -8,6 +8,11 @@ class Home extends BaseController
 {
     public function index()
     {
+        $session = session();
+        if (!$session->get('is_logged_in')) {
+            return redirect()->to('/login');
+        }
+
         try {
             $platModel = new PlatModel();
             
@@ -36,5 +41,12 @@ class Home extends BaseController
             echo "<br>Ligne: " . $e->getLine();
             die();
         }
+    }
+
+    public function logout()
+    {
+        $session = session();
+        $session->destroy();
+        return redirect()->to('/login');
     }
 }
